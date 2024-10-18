@@ -119,7 +119,7 @@ local({
     baseFileBase <- file.path(.Library,"base","R","base")
 
     if (file.info(baseFileBase)["size"] < 20000) # crude heuristic
-        stop("may already be using lazy loading on base");
+        message("WARNING: may already be using lazy loading on base");
 
     basevars <- ls(baseenv(), all.names=TRUE)
     prims <- basevars[sapply(basevars, function(n) is.primitive(get(n, baseenv())))]
