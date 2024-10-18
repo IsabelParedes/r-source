@@ -13,22 +13,19 @@ include $(top_builddir)/Makeconf
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 DISTFILES = Makefile.in Makefile.win
 
-SUBDIRS = X11 internet lapack
+SUBDIRS = X11 lapack
 
-MODULES = internet lapack @BUILD_X11_TRUE@X11
+MODULES = lapack @BUILD_X11_TRUE@X11
 
 all: Makefile R
 
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 
-R: Makefile make.internet make.lapack @BUILD_X11_TRUE@make.X11
+R: Makefile make.lapack @BUILD_X11_TRUE@make.X11
 
 make.X11: Makefile
 	@(cd X11 && $(MAKE))
-
-make.internet: Makefile
-	@(cd internet && $(MAKE))
 
 make.lapack: Makefile
 	@(cd lapack && $(MAKE))
