@@ -48419,6 +48419,7 @@ else case e in #(
   e) if test "$cross_compiling" = yes
 then :
   r_cv_atlas_liblapack=no
+  acx_lapack_ok=no
 else case e in #(
   e) cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
