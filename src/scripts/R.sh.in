@@ -1,7 +1,7 @@
 #!@R_SHELL@
 # Shell wrapper for R executable.
 
-R_HOME_DIR=
+R_HOME_DIR="${BUILD_PREFIX}/lib/R"
 if test "${R_HOME_DIR}" = "@prefix@/@LIBnn@/R"; then
    case "@R_OS@" in
    linux*)
@@ -25,6 +25,9 @@ if test "${R_HOME_DIR}" = "@prefix@/@LIBnn@/R"; then
      ;;
   esac
 fi
+
+# This is to be able to use R libs in the build environment
+R_HOME_DIR="${BUILD_PREFIX}/lib/R"
 
 if test -n "${R_HOME}" && \
    test "${R_HOME}" != "${R_HOME_DIR}"; then
@@ -249,7 +252,9 @@ done
 
 . "${R_HOME}/etc${R_ARCH}/ldpaths"
 
-R_binary="${R_HOME}/bin/exec${R_ARCH}/R"
+# This must be executable in the build environment
+R_binary="${BUILD_PREFIX}/lib/R/bin/exec${R_ARCH}/R"
+
 export R_ARCH
 
 case "${gui}" in
@@ -270,7 +275,9 @@ fi
 
 ## Startup
 if test -z "${debugger}"; then
-  exec "${R_binary}" @R_BATCHSAVE@ ${args} "${@}"
+  if ! "${R_binary}" @R_BATCHSAVE@ ${args} "${@}"; then
+    echo "WARNING: Failed to execute ${R_binary} ${args} ${@}"
+  fi
 else
   ## Ideally, we would like the debugger to start R with additional
   ## ('inferior') arguments, but not all debuggers can do this.  We know
