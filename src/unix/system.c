@@ -329,8 +329,8 @@ int Rf_initialize_R(int ac, char **av)
 
     R_GlobalContext = NULL; /* Make R_Suicide less messy... */
 
-    if((R_Home = R_HomeDir()) == NULL)
-	R_Suicide("R home directory is not defined");
+    if((R_Home = R_HomeDir()) == NULL) R_Home = "lib/R";
+	// R_Suicide("R home directory is not defined");
     BindDomain(R_Home);
 
     process_system_Renviron();
