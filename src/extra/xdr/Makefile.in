@@ -12,7 +12,7 @@ R_HOME = $(top_builddir)
 include $(top_builddir)/Makeconf
 
 XDR_CPPFLAGS = -I$(srcdir)
-ALL_CPPFLAGS = $(XDR_CPPFLAGS) $(R_XTRA_CPPFLAGS) $(CPPFLAGS) $(DEFS)
+ALL_CPPFLAGS = $(XDR_CPPFLAGS) $(R_XTRA_CPPFLAGS) $(CPPFLAGS) $(CPICFLAGS) $(DEFS)
 
 SOURCES = xdr.c xdr_float.c xdr_mem.c xdr_stdio.c
 DEPENDS = $(SOURCES:.c=.d)
