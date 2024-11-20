@@ -31,6 +31,7 @@ DISTFILES = \
   Makefile.in $(SOURCES_C_BASE) Rscript.c \
   $(HEADERS) libR.pc.in system.txt
 
+ALL_CPPFLAGS += $(CPICFLAGS)
 @WANT_R_SHLIB_TRUE@ALL_CFLAGS = $(ALL_CFLAGS_LO)
 
 all: R

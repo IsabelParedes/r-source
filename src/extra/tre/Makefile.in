@@ -24,6 +24,8 @@ HEADERS = tre.h tre-ast.h tre-compile.h tre-config.h tre-internal.h \
 
 DEPENDS = $(SOURCES:.c=.d)
 OBJECTS = $(SOURCES:.c=.o)
+
+ALL_CPPFLAGS += $(CPICFLAGS)
 @WANT_R_SHLIB_TRUE@ALL_CFLAGS = $(ALL_CFLAGS_LO) @C_VISIBILITY@
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
