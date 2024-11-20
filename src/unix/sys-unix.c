@@ -467,6 +467,15 @@ static void timeout_handler(int sig)
     /* tost.child_pid is -1 when child process no longer exists */
 }
 
+#ifdef EMSCRIPTEN
+/* sigsuspend is not supported in Emscripten */
+int sigsuspend(const sigset_t *mask)
+{
+    errno = EINVAL;
+    return -1;
+}
+#endif
+
 static pid_t timeout_wait(int *wstatus)
 {
     pid_t wres;
@@ -480,7 +489,7 @@ static pid_t timeout_wait(int *wstatus)
 
     int saveerrno = errno;
     while((wres = waitpid(tost.child_pid, wstatus, WNOHANG)) == 0)
-	sigsuspend(&unblocked_ss);
+		sigsuspend(&unblocked_ss);
 
     if (errno == EINTR)
 	/* EINTR is not really an error but expected situation here, however,
