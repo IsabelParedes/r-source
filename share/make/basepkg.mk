@@ -1,5 +1,6 @@
 ## ${R_HOME}/share/make/basepkg.mk
 
+toolsdir = $(srcdir)/../tools
 
 .PHONY: front instdirs mkR mkR1 mkR2 mkRbase mkdesc mkdesc2 mkdemos mkdemos2 \
   mkexec mkman mkpo mksrc mksrc-win mksrc-win2 mkRsimple mklazy mklazycomp \
@@ -86,11 +87,17 @@ mkRbase:
 mkdesc:
 	@if test -f DESCRIPTION; then \
 	  if test "$(PKG_BUILT_STAMP)" != ""; then \
-	    $(ECHO) "tools:::.install_package_description('.', '$(top_builddir)/library/${pkg}', '$(PKG_BUILT_STAMP)')" | \
+	  	(cat $(toolsdir)/R/admin.R; \
+		 cat $(toolsdir)/R/QC.R; \
+		 cat $(toolsdir)/R/utils.R; \
+	    $(ECHO) ".install_package_description('.', '$(top_builddir)/library/${pkg}', '$(PKG_BUILT_STAMP)')") | \
 	    R_DEFAULT_PACKAGES=NULL $(R_EXE) > /dev/null ; \
 	  else \
-	  $(ECHO) "tools:::.install_package_description('.', '$(top_builddir)/library/${pkg}')" | \
-	  R_DEFAULT_PACKAGES=NULL $(R_EXE) > /dev/null ; \
+	  	(cat $(toolsdir)/R/admin.R; \
+		 cat $(toolsdir)/R/QC.R; \
+		 cat $(toolsdir)/R/utils.R; \
+	  	$(ECHO) ".install_package_description('.', '$(top_builddir)/library/${pkg}')") | \
+	  	R_DEFAULT_PACKAGES=NULL $(R_EXE) > /dev/null ; \
 	  fi; \
 	fi
 
@@ -127,7 +134,8 @@ mkexec:
 ## only used if byte-compilation is disabled
 mklazy:
 	@$(INSTALL_DATA) all.R $(top_builddir)/library/$(pkg)/R/$(pkg)
-	@$(ECHO) "tools:::makeLazyLoading(\"$(pkg)\")" | \
+	@(cat $(toolsdir)/R/makeLazyLoad.R; \
+	  $(ECHO) "makeLazyLoading(\"$(pkg)\")") | \
 	  R_DEFAULT_PACKAGES=$(DEFPKGS) LC_ALL=C $(R_EXE) > /dev/null
 
 mklazycomp: $(top_builddir)/library/$(pkg)/R/$(pkg).rdb
@@ -148,7 +156,8 @@ mksrc-win2:
 
 sysdata: $(srcdir)/R/sysdata.rda
 	@$(ECHO) "installing 'sysdata.rda'"
-	@$(ECHO) "tools:::sysdata2LazyLoadDB(\"$(srcdir)/R/sysdata.rda\",\"$(top_builddir)/library/$(pkg)/R\")" | \
+	@(cat $(toolsdir)/R/makeLazyLoad.R; \
+	  $(ECHO) "sysdata2LazyLoadDB(\"$(srcdir)/R/sysdata.rda\",\"$(top_builddir)/library/$(pkg)/R\")") | \
 	  R_DEFAULT_PACKAGES=NULL LC_ALL=C $(R_EXE)
 
 
