@@ -80,6 +80,7 @@ install-Rscript:
 	  -o Rscript $(srcdir)/Rscript.c
 	@$(MKINSTALLDIRS) "$(DESTDIR)$(Rexecbindir)"
 	@$(INSTALL_PROGRAM) Rscript "$(DESTDIR)$(Rexecbindir)/Rscript"
+	@$(INSTALL_PROGRAM) Rscript.wasm "$(DESTDIR)$(Rexecbindir)/Rscript.wasm" || true
 ## substitute at install time to allow 'prefix' to be overridden
 install-pc:
 	@$(MKINSTALLDIRS) "$(DESTDIR)$(libdir)/pkgconfig"
