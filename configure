@@ -53644,8 +53644,8 @@ fi
       fi
     fi
     if test "${have_png}" = yes; then
-      BITMAP_CPPFLAGS="${BITMAP_CPPFLAGS} ${PNG_CPPFLAGS}"
-      BITMAP_LIBS="${BITMAP_LIBS} ${PNG_LIBS}"
+      BITMAP_CPPFLAGS="${BITMAP_CPPFLAGS}"
+      BITMAP_LIBS="${BITMAP_LIBS}"
 
 printf "%s\n" "#define HAVE_PNG 1" >>confdefs.h
 
