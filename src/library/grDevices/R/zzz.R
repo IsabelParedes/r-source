@@ -28,10 +28,11 @@ if (.Platform$OS.type == "windows") {
     if (.Platform$OS.type != "windows" && !.Call(C_cairoProps, 2L))
         X11.options(type = "Xlib")
 
-    extras <- if(.Platform$OS.type == "windows")
-        list(windowsTimeouts = c(100L,500L)) else
-        list(bitmapType = if(capabilities("aqua")) "quartz"
-        else if(.Call(C_cairoProps, 2L)) "cairo" else "Xlib")
+    # extras <- if(.Platform$OS.type == "windows")
+    #     list(windowsTimeouts = c(100L,500L)) else
+    #     list(bitmapType = if(capabilities("aqua")) "quartz"
+    #     else if(.Call(C_cairoProps, 1L)) "cairo" else "Xlib")
+    extras <- list(bitmapType = "cairo")
     op.grDevices <- c(list(locatorBell = TRUE, device.ask.default = FALSE),
                       extras, list(device = .select_device()))
     toset <- !(names(op.grDevices) %in% names(.Options))
