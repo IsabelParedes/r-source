@@ -42,7 +42,10 @@ all: Makefile DESCRIPTION
 	  fi \
 	fi
 	@$(MAKE) sysdata
-	@$(ECHO) "tools:::.install_package_description('.', '"$(top_builddir)/library/${pkg}"')" | \
+	@(cat $(srcdir)/R/admin.R; \
+	  cat $(srcdir)/R/QC.R; \
+	  cat $(srcdir)/R/utils.R; \
+	  $(ECHO) ".install_package_description('.', '"$(top_builddir)/library/${pkg}"')") | \
 	  R_DEFAULT_PACKAGES=NULL $(R_EXE) > /dev/null
 
 mkR: mkR1
@@ -68,9 +71,10 @@ Rsimple: mkR mkRsimple
 
 Rlazy: mkR mkRsimple
 	@$(INSTALL_DATA) all.R $(top_builddir)/library/$(pkg)/R/$(pkg)
-	@(cat $(srcdir)/R/makeLazyLoad.R; \
+	R_SYSTEM_ABI='@R_SYSTEM_ABI@'
+	(cat $(srcdir)/R/makeLazyLoad.R; \
 	  $(ECHO) "makeLazyLoading(\"$(pkg)\")") | \
 	  R_SYSTEM_ABI='@R_SYSTEM_ABI@' \
-	  R_DEFAULT_PACKAGES=NULL LC_ALL=C $(R_EXE) > /dev/null
+	  R_DEFAULT_PACKAGES=NULL LC_ALL=C $(R_EXE)
 
 Rlazycomp: mkR mkRsimple mklazycomp
