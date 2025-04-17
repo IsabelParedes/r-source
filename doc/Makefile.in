@@ -25,6 +25,15 @@ HELP2MAN = perl $(top_srcdir)/tools/help2man.pl
 
 R_EXE = $(top_builddir)/bin/R --vanilla --no-echo
 
+R_SCRIPT_EXE = $(top_builddir)/bin/Rscript
+
+ifdef CROSS_COMPILING
+R_SCRIPT_EXE = $(R_SCRIPT_EXECUTABLE)
+R_EXE = R_HOME=$(top_builddir) \
+	    LD_LIBRARY_PATH=${LINUX_BUILD_DIR}/lib:${LD_LIBRARY_PATH} \
+	    R_DEFAULT_PACKAGES=NULL $(R_EXECUTABLE) --vanilla --no-echo
+endif
+
 all: Makefile R docs
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
@@ -52,7 +61,7 @@ R.1:
 Rscript.1:
 	@$(HELP2MAN) --no-info --output=Rscript.1 \
 	  --name="front end for scripting with R" \
-	  $(top_builddir)/bin/Rscript
+	  $(R_SCRIPT_EXE)
 
 NEWS.rds: $(srcdir)/NEWS.Rd
 	@$(ECHO) "options(warn=1);saveRDS(tools:::prepare_Rd(tools::parse_Rd(\"$(srcdir)/NEWS.Rd\", \

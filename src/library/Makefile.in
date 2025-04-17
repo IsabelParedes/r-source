@@ -17,6 +17,12 @@ SUBDIRS = profile $(R_PKGS_BASE) translations Recommended
 
 R_EXE = $(top_builddir)/bin/R --vanilla --no-echo
 
+ifdef CROSS_COMPILING
+R_EXE = R_HOME=$(top_builddir) \
+	    LD_LIBRARY_PATH=${LINUX_BUILD_DIR}/lib:${LD_LIBRARY_PATH} \
+	    R_DEFAULT_PACKAGES=NULL $(R_EXECUTABLE) --vanilla --no-echo
+endif
+
 .SUFFIXES: .inn .Rdts .Rdh
 
 all: Makefile R

@@ -252,6 +252,12 @@ done
 R_binary="${R_HOME}/bin/exec${R_ARCH}/R"
 export R_ARCH
 
+if [ "${CROSS_COMPILING}" = "true" ] && [ -n "${RECIPE_DIR}" ] && [ -n "${WASM_BUILD_DIR}" ]; then
+  LD_LIBRARY_PATH="${LINUX_BUILD_DIR}/lib:${LD_LIBRARY_PATH}"
+  R_binary="${R_EXECUTABLE}"
+  ${RECIPE_DIR}/cross_libraries.sh --setup ${WASM_BUILD_DIR}
+fi
+
 case "${gui}" in
 Tk|tk|X11|x11)
   ;;
